@@ -1,15 +1,24 @@
+import static java.lang.Thread.sleep;
 
 public class Simulation {
     private Node[][] grid;
     private Node startNode;
     private Node[] targetNodes;
 
-    public Simulation(int gridSize, int obstaclePercentage, int numOfTargets, int nodesBetweenTargets,
-                      int nodesFromStart) {
-        grid = new Node[gridSize][gridSize];
-        generateObstacles(obstaclePercentage);
+    public Simulation(Scenario scenario) {
+        grid = new Node[scenario.getGridSize()][scenario.getGridSize()];
+        initiateGrid();
+        generateObstacles(scenario.getObstaclePercentage());
         generateStartNode();
-        generateTargetNodes(numOfTargets, nodesBetweenTargets, nodesFromStart);
+        generateTargetNodes(scenario.getNumOfTargets(), scenario.getNodesBetweenTargets(), scenario.getNodesFromStart());
+    }
+
+    private void initiateGrid() {
+    for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                grid[i][j] = new Node(i, j);
+            }
+        }
     }
 
     public void generateObstacles(int percentage) {
@@ -17,14 +26,22 @@ public class Simulation {
     }
 
     public void generateStartNode() {
-        //generate random startnode
+        startNode = grid[0][1];
     }
 
     public void generateTargetNodes(int numOfTargets, int nodesBetweenTargets, int nodesFromStart) {
-        //generate random targetnodes
+        targetNodes = new Node[numOfTargets];
+        for(int i = 0; i < numOfTargets; i++) {
+            targetNodes[i] = grid[i*2+1][i*2+1];
+        }
     }
 
     public void run () {
+        try {
+            sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Algorithm currentAlgorithm = Algorithm.BFS;
 
         //run bfs algorithm
@@ -34,5 +51,21 @@ public class Simulation {
 
         //run a* algorithm
         //retrieve data
+    }
+
+    public int getGridSize() {
+        return grid.length;
+    }
+
+    public Node getNode(int row, int col) {
+        return grid[row][col];
+    }
+
+    public Node getStartNode() {
+        return startNode;
+    }
+
+    public Node[] getTargetNodes() {
+        return targetNodes;
     }
 }

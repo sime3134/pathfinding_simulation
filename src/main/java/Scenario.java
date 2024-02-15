@@ -40,4 +40,17 @@ public class Scenario {
     public int getScenarioId() {
         return scenarioId;
     }
+
+    @Override
+    public String toString() {
+        return "Scenario{" +
+                "groupId=" + groupId +
+                ", scenarioId=" + scenarioId +
+                ", gridSize=" + gridSize +
+                ", obstaclePercentage=" + obstaclePercentage +
+                ", numOfTargets=" + numOfTargets +
+                ", nodesBetweenTargets=" + nodesBetweenTargets +
+                ", nodesFromStart=" + nodesFromStart +
+                '}';
+    }
 }
