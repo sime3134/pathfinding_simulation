@@ -1,3 +1,5 @@
+package base;
+
 import java.util.ArrayList;
 
 public class Launcher {
@@ -5,7 +7,7 @@ public class Launcher {
     private static final int SIMULATIONS_PER_SCENARIO = 20;
 
     public static void main(String[] args) {
-        System.out.println("Simulation Launched");
+        System.out.println("base.Simulation Launched");
         ArrayList<Scenario> scenarios;
         Frame frame = new Frame();
 

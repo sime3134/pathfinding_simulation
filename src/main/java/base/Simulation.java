@@ -1,9 +1,18 @@
+package base;
+
+import base.algorithms.AStar;
+import base.algorithms.BFS;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Thread.sleep;
 
 public class Simulation {
-    private Node[][] grid;
-    private Node startNode;
-    private Node[] targetNodes;
+    private final Node[][] grid;
+    private Vector startNodePos;
+    private List<Vector> targetNodes;
+    private static final boolean SLOW_MODE = true;
 
     public Simulation(Scenario scenario) {
         grid = new Node[scenario.getGridSize()][scenario.getGridSize()];
@@ -16,7 +25,8 @@ public class Simulation {
     private void initiateGrid() {
     for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                grid[i][j] = new Node(i, j);
+                grid[i][j] = new Node(i, j, 0);
+                grid[i][j].setGCost(Integer.MAX_VALUE);
             }
         }
     }
@@ -26,28 +36,32 @@ public class Simulation {
     }
 
     public void generateStartNode() {
-        startNode = grid[0][1];
+        startNodePos = new Vector(0, 1);
     }
 
     public void generateTargetNodes(int numOfTargets, int nodesBetweenTargets, int nodesFromStart) {
-        targetNodes = new Node[numOfTargets];
+        targetNodes = new ArrayList<>();
         for(int i = 0; i < numOfTargets; i++) {
-            targetNodes[i] = grid[i*2+1][i*2+1];
+            targetNodes.add(new Vector(i*5+3, i*5+3));
         }
     }
 
     public void run () {
-        try {
-            sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(SLOW_MODE) {
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        Algorithm currentAlgorithm = Algorithm.BFS;
+
+        //AStar aStar = new AStar();
+        //ResultData resultData = aStar.run(grid, startNodePos, targetNodes);
 
         //run bfs algorithm
         //retrieve data
-
-        currentAlgorithm = Algorithm.A_STAR;
+        BFS bfs = new BFS();
+        ResultData resultData1 = bfs.run(grid, startNodePos, targetNodes);
 
         //run a* algorithm
         //retrieve data
@@ -61,11 +75,11 @@ public class Simulation {
         return grid[row][col];
     }
 
-    public Node getStartNode() {
-        return startNode;
+    public Vector getStartNodePosition() {
+        return startNodePos;
     }
 
-    public Node[] getTargetNodes() {
+    public List<Vector> getTargetNodePositions() {
         return targetNodes;
     }
 }

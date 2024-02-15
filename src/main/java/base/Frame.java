@@ -1,3 +1,5 @@
+package base;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -111,8 +113,14 @@ public class Frame extends JFrame {
         graphics.setColor(Color.GRAY); // Or any color
         for (int row = 0; row < currentSimulation.getGridSize(); row++) {
             for (int col = 0; col < currentSimulation.getGridSize(); col++) {
-                if (currentSimulation.getNode(row, col).isObstacle()) {
+                if (currentSimulation.getNode(row, col).getType() == 1) {
                     drawCell(graphics, row, col, Color.GRAY);
+                }
+                if (currentSimulation.getNode(row, col).getType() == 2) {
+                    drawCell(graphics, row, col, Color.BLUE);
+                }
+                if (currentSimulation.getNode(row, col).getType() == 3) {
+                    drawCell(graphics, row, col, Color.YELLOW);
                 }
             }
         }
@@ -120,14 +128,14 @@ public class Frame extends JFrame {
 
     private void drawStartNode(Graphics graphics) {
         graphics.setColor(Color.decode("#006400"));
-        Node start = currentSimulation.getStartNode();
-        drawCell(graphics, start.getRow(), start.getCol(), Color.decode("#006400"));
+        Vector startPos = currentSimulation.getStartNodePosition();
+        drawCell(graphics, startPos.getX(), startPos.getY(), Color.decode("#006400"));
     }
 
     private void drawTargetNodes(Graphics graphics) {
         graphics.setColor(Color.RED);
-        for (Node target : currentSimulation.getTargetNodes()) {
-            drawCell(graphics, target.getRow(), target.getCol(), Color.RED);
+        for (Vector target : currentSimulation.getTargetNodePositions()) {
+            drawCell(graphics, target.getX(), target.getY(), Color.RED);
         }
     }
 

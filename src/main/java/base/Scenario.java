@@ -1,3 +1,5 @@
+package base;
+
 public class Scenario {
     private int groupId;
     private int scenarioId;
@@ -43,7 +45,7 @@ public class Scenario {
 
     @Override
     public String toString() {
-        return "Scenario{" +
+        return "base.Scenario{" +
                 "groupId=" + groupId +
                 ", scenarioId=" + scenarioId +
                 ", gridSize=" + gridSize +
