@@ -17,8 +17,8 @@ public class Launcher {
             System.out.println(scenario.toString());
             for(int i = 0; i < SIMULATIONS_PER_SCENARIO; i++) {
                 Simulation currentSimulation = new Simulation(scenario);
-                currentSimulation.run();
                 frame.setCurrentSimulation(currentSimulation);
+                currentSimulation.run();
             }
         }
     }

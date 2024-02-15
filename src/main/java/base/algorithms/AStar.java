@@ -4,63 +4,68 @@ import base.Node;
 import base.ResultData;
 import base.Vector;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
+
+import static java.lang.Thread.sleep;
 
 public class AStar implements Algorithm{
 
     @Override
     public ResultData run(Node[][] grid, Vector startNodePosition, List<Vector> targetNodePositions) {
+        System.out.println("Running A*");
+        int[] pathLength = new int[targetNodePositions.size()];
         boolean pathExistToAllTargets = true;
         Node startNode = grid[startNodePosition.getX()][startNodePosition.getY()];
 
-        for(Vector currentTarget : targetNodePositions) {
-            if(!findOneTarget(grid, startNode, currentTarget)) {
+        long executionTime = System.nanoTime();
+        for(int i = 0; i < targetNodePositions.size(); i++) {
+            pathLength[i] = findOneTarget(grid, startNode, targetNodePositions.get(i));
+            if(pathLength[i] == -1) {
                 pathExistToAllTargets = false;
+                System.out.println("No path to target");
                 break;
             }
+        }
+        executionTime = System.nanoTime() - executionTime;
 
+        if(pathExistToAllTargets) {
+            ResultData finalResult = new ResultData(0,0);
+            for(int nodesVisited : pathLength) {
+                finalResult.setNodesVisited(finalResult.getNodesVisited() + nodesVisited);
+            }
+            finalResult.setExecutionTime(executionTime);
+            return finalResult;
         }
 
-        return new ResultData(1, 1);
+        return null;
     }
 
-    private boolean findOneTarget(Node[][] grid, Node startNode, Vector currentTarget) {
+    private int findOneTarget(Node[][] grid, Node startNode, Vector currentTarget) {
         // Data structures
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingInt(Node::getFCost));
-        List<Node> closedSet = new ArrayList<>();
+        HashSet<Node> closedSet = new HashSet<>();
+        int traversedNodes = 0;
 
         startNode.setGCost(0); // The cost from the start to the start is 0
         startNode.setHCost(calculateHeuristic(startNode, currentTarget)); // Estimate cost to the current target
         openSet.add(startNode);
 
         while (!openSet.isEmpty()) {
+            try {
+                sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Node current = openSet.poll();
 
             //if target
             if (current.getPosition().getX() == currentTarget.getX() && current.getPosition().getY() == currentTarget.getY()) {
-                Node parent = current.getParent();
-                while (parent.getParent() != null) {
-                    parent.setType(2);
-                    parent = parent.getParent();
-                }
-                current.setParent(null);
-                current.setGCost(Integer.MAX_VALUE);
-                for(Node node : closedSet) {
-                    node.setParent(null);
-                    node.setGCost(Integer.MAX_VALUE);
-                }
-                for(Node node : openSet) {
-                    node.setParent(null);
-                    node.setGCost(Integer.MAX_VALUE);
-                }
-                return true;
+                reconstructPath(current);
+                resetNodes(current, closedSet, openSet);
+                return traversedNodes;
             }
 
             closedSet.add(current);
-            current.setType(3);
 
             for (Node neighbor : getNeighbors(current, grid)) {
                 if (closedSet.contains(neighbor) || neighbor.getType() == 1) { // 1 = obstacle
@@ -70,19 +75,41 @@ public class AStar implements Algorithm{
                 int tentativeGCost = current.getGCost() + 1;
 
                 if (tentativeGCost < neighbor.getGCost()) {
+                    int hCost = calculateHeuristic(neighbor, currentTarget);
                     neighbor.setParent(current);
                     neighbor.setGCost(tentativeGCost);
-                    neighbor.setHCost(calculateHeuristic(neighbor, currentTarget));
-                    neighbor.setFCost(neighbor.getGCost() + neighbor.getHCost());
+                    neighbor.setFCost(neighbor.getGCost() + hCost);
 
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor);
+                        if(neighbor.getType() != 2) neighbor.setType(3);
+                        traversedNodes++;
                     }
                 }
             }
         }
+        return -1;
+    }
 
-        return false;
+    private void reconstructPath(Node current) {
+        Node parent = current.getParent();
+        while (parent.getParent() != null) {
+            parent.setType(2);
+            parent = parent.getParent();
+        }
+    }
+
+    private void resetNodes(Node current, HashSet<Node> closedSet, PriorityQueue<Node> openSet) {
+        current.setParent(null);
+        current.setGCost(Integer.MAX_VALUE);
+        for(Node node : closedSet) {
+            node.setParent(null);
+            node.setGCost(Integer.MAX_VALUE);
+        }
+        for(Node node : openSet) {
+            node.setParent(null);
+            node.setGCost(Integer.MAX_VALUE);
+        }
     }
 
     private List<Node> getNeighbors(Node node, Node[][] grid) {
@@ -101,19 +128,6 @@ public class AStar implements Algorithm{
 
     private int calculateHeuristic(Node node, Vector target) {
         return Math.abs(node.getPosition().getX() - target.getX()) + Math.abs(node.getPosition().getY() - target.getY());
-    }
-
-    private int calculateMovementCost(Node current, Node neighbor) {
-        int dx = Math.abs(current.getPosition().getX() - neighbor.getPosition().getX());
-        int dy = Math.abs(current.getPosition().getY() - neighbor.getPosition().getY());
-
-        if (dx == 1 && dy == 1) {
-            // Diagonal movement
-            return 14; // Assuming diagonal movement cost is higher than cardinal movement (1)
-        } else {
-            // Cardinal movement
-            return 10;
-        }
     }
 
 }

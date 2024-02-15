@@ -48,7 +48,7 @@ public class Frame extends JFrame {
                 draw();
 
                 try {
-                    Thread.sleep(10); // Adjust sleep time as needed
+                    Thread.sleep(1); // Adjust sleep time as needed
                 } catch (InterruptedException ex) {
                     // Handle the exception properly
                 }
@@ -81,7 +81,7 @@ public class Frame extends JFrame {
 
         if (currentSimulation != null) {
             drawGrid(graphics);
-            drawObstacles(graphics);
+            drawOther(graphics);
             drawStartNode(graphics);
             drawTargetNodes(graphics);
         }
@@ -109,8 +109,8 @@ public class Frame extends JFrame {
         }
     }
 
-    private void drawObstacles(Graphics graphics) {
-        graphics.setColor(Color.GRAY); // Or any color
+    private void drawOther(Graphics graphics) {
+        graphics.setColor(Color.GRAY);
         for (int row = 0; row < currentSimulation.getGridSize(); row++) {
             for (int col = 0; col < currentSimulation.getGridSize(); col++) {
                 if (currentSimulation.getNode(row, col).getType() == 1) {

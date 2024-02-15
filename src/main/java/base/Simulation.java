@@ -5,6 +5,7 @@ import base.algorithms.BFS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
@@ -13,6 +14,8 @@ public class Simulation {
     private Vector startNodePos;
     private List<Vector> targetNodes;
     private static final boolean SLOW_MODE = true;
+
+    Random random = new Random();
 
     public Simulation(Scenario scenario) {
         grid = new Node[scenario.getGridSize()][scenario.getGridSize()];
@@ -36,32 +39,34 @@ public class Simulation {
     }
 
     public void generateStartNode() {
-        startNodePos = new Vector(0, 1);
+        //Randomize start node
+        startNodePos = new Vector(random.nextInt(0, grid.length), random.nextInt(0, grid.length));
     }
 
     public void generateTargetNodes(int numOfTargets, int nodesBetweenTargets, int nodesFromStart) {
         targetNodes = new ArrayList<>();
         for(int i = 0; i < numOfTargets; i++) {
-            targetNodes.add(new Vector(i*5+3, i*5+3));
+            targetNodes.add(new Vector(random.nextInt(0, grid.length), random.nextInt(0, grid.length)));
         }
     }
 
     public void run () {
         if(SLOW_MODE) {
             try {
-                sleep(100);
+                sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        //AStar aStar = new AStar();
-        //ResultData resultData = aStar.run(grid, startNodePos, targetNodes);
+        AStar aStar = new AStar();
+        ResultData resultData = aStar.run(grid, startNodePos, targetNodes);
+        System.out.println(resultData);
 
         //run bfs algorithm
         //retrieve data
-        BFS bfs = new BFS();
-        ResultData resultData1 = bfs.run(grid, startNodePos, targetNodes);
+        //BFS bfs = new BFS();
+        //ResultData resultData1 = bfs.run(grid, startNodePos, targetNodes);
 
         //run a* algorithm
         //retrieve data

@@ -12,7 +12,7 @@ public class Node {
     private int hCost;
     private int fCost;
 
-    public Node(int y, int x, int type) {
+    public Node(int x, int y, int type) {
         this.position = new Vector(x, y);
         this.type = type;
     }
