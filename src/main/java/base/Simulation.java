@@ -59,14 +59,15 @@ public class Simulation {
             }
         }
 
-        AStar aStar = new AStar();
-        ResultData resultData = aStar.run(grid, startNodePos, targetNodes);
-        System.out.println(resultData);
+        //AStar aStar = new AStar();
+        //ResultData resultData = aStar.run(grid, startNodePos, targetNodes);
+        //System.out.println(resultData);
 
         //run bfs algorithm
         //retrieve data
-        //BFS bfs = new BFS();
-        //ResultData resultData1 = bfs.run(grid, startNodePos, targetNodes);
+        BFS bfs = new BFS();
+        ResultData resultData1 = bfs.run(grid, startNodePos, targetNodes);
+        System.out.println(resultData1);
 
         //run a* algorithm
         //retrieve data
