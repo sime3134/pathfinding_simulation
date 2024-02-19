@@ -40,8 +40,6 @@ public class Simulation {
     }
 
     public void generateObstacles(double ratio) {
-        Random random = new Random();
-
         int numberOfNodes = grid.length * grid[0].length;
 
         int numberOfObstacles = (int) (numberOfNodes * ratio);
