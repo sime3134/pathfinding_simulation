@@ -30,7 +30,7 @@ public class ScenarioReader {
         int groupId = Integer.parseInt(values[0].trim());
         int scenarioId = Integer.parseInt(values[1].trim());
         int gridSize = Integer.parseInt(values[2].trim());
-        int obstaclePercentage = Integer.parseInt(values[3].trim());
+        double obstaclePercentage = Double.parseDouble(values[3].trim());
         int numOfTargets = Integer.parseInt(values[4].trim());
         int nodesBetweenTargets = Integer.parseInt(values[5].trim());
 

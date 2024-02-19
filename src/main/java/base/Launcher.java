@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Launcher {
 
-    private static final int SIMULATIONS_PER_SCENARIO = 20;
+    private static final int SIMULATIONS_PER_SCENARIO = 1000;
 
     public static void main(String[] args) {
         System.out.println("base.Simulation Launched");
@@ -26,7 +26,8 @@ public class Launcher {
             scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
             for (Scenario scenario : scenarios) {
                 System.out.println(scenario.toString());
-                for(int i = 0; i < SIMULATIONS_PER_SCENARIO; i++) {
+                for(int i = 1; i <= SIMULATIONS_PER_SCENARIO; i++) {
+                    System.out.println("Simulation number: " + i);
                     Simulation currentSimulation = new Simulation(scenario);
                     frame.setCurrentSimulation(currentSimulation);
                     boolean validGrid = currentSimulation.run(visualizationMode);

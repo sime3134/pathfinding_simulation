@@ -4,11 +4,11 @@ public class Scenario {
     private final int groupId;
     private final int scenarioId;
     private final int gridSize;
-    private final int obstaclePercentage;
+    private final double obstaclePercentage;
     private final int numOfTargets;
     private final int nodesBetweenTargets;
 
-    public Scenario(int groupId, int scenarioId, int gridSize, int obstaclePercentage, int numOfTargets, int nodesBetweenTargets) {
+    public Scenario(int groupId, int scenarioId, int gridSize, double obstaclePercentage, int numOfTargets, int nodesBetweenTargets) {
         this.groupId = groupId;
         this.scenarioId = scenarioId;
         this.gridSize = gridSize;
@@ -29,7 +29,7 @@ public class Scenario {
         return numOfTargets;
     }
 
-    public int getObstaclePercentage() {
+    public double getObstaclePercentage() {
         return obstaclePercentage;
     }
 

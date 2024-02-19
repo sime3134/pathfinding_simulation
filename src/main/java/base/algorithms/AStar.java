@@ -2,8 +2,11 @@ package base.algorithms;
 
 import base.Node;
 import base.ResultData;
+import base.TargetVector;
 import base.Vector;
 import java.util.*;
+
+import static base.Helpers.delay;
 
 public class AStar implements Algorithm{
     private static final int DELAY = 5;
@@ -12,7 +15,7 @@ public class AStar implements Algorithm{
     private int traversedNodes;
 
     @Override
-    public ResultData run(Node[][] grid, Vector startNodePosition, List<Vector> targetNodePositions, boolean visualized) {
+    public ResultData run(Node[][] grid, Vector startNodePosition, List<TargetVector> targetNodePositions, boolean visualized) {
         int[] pathLength = new int[targetNodePositions.size()];
         boolean pathExistToAllTargets = true;
         Node startNode = grid[startNodePosition.getX()][startNodePosition.getY()];
@@ -86,14 +89,14 @@ public class AStar implements Algorithm{
         return -1;
     }
 
-    private int findOneTargetWithVisualization(Node[][] grid, Node startNode, Vector currentTarget) {
+    private int findOneTargetWithVisualization(Node[][] grid, Node startNode, TargetVector currentTarget) {
         // Data structures
         reset();
 
         setup(startNode, currentTarget, openSet);
 
         while (!openSet.isEmpty()) {
-            delay();
+            delay(DELAY);
             Node current = openSet.poll();
 
             if(current == null) {
@@ -142,14 +145,6 @@ public class AStar implements Algorithm{
         openSet = new PriorityQueue<>(Comparator.comparingInt(Node::getTotalEstimatedCost));
         closedSet = new HashSet<>();
         traversedNodes = 0;
-    }
-
-    private static void delay() {
-        try {
-            Thread.sleep(DELAY);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void reconstructPath(Node current) {

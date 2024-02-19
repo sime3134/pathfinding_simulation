@@ -2,6 +2,7 @@ package base.algorithms;
 
 import base.Node;
 import base.ResultData;
+import base.TargetVector;
 import base.Vector;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class BFS implements Algorithm {
 
     private static final int DELAY = 5;
     @Override
-    public ResultData run(Node[][] grid, Vector startNode, List<Vector> targetNodes, boolean visualizationMode) {
+    public ResultData run(Node[][] grid, Vector startNode, List<TargetVector> targetNodes, boolean visualizationMode) {
         long startTime = System.nanoTime();
         int nodesVisited;
 
@@ -29,7 +30,7 @@ public class BFS implements Algorithm {
         return new ResultData(executionTimeInMicros, nodesVisited);
     }
 
-    private int withVisualization(Node[][] grid, Vector startNode, List<Vector> targetNodes) {
+    private int withVisualization(Node[][] grid, Vector startNode, List<TargetVector> targetNodes) {
         int rows = grid.length;
         int cols = grid[0].length;
 
@@ -39,7 +40,7 @@ public class BFS implements Algorithm {
         queue.add(grid[startNode.getX()][startNode.getY()]);
         visited[startNode.getX()][startNode.getY()] = true;
 
-        List<Vector> foundTargets = new ArrayList<>(); // Store found target nodes
+        List<TargetVector> foundTargets = new ArrayList<>(); // Store found target nodes
         while (!queue.isEmpty() && foundTargets.size() < targetNodes.size()) {
             Node current = queue.poll();
             current.setType(3);
@@ -50,8 +51,8 @@ public class BFS implements Algorithm {
     }
 
     private int exploreNeighborsWithVisualization(Node[][] grid, Queue<Node> queue, boolean[][] visited,
-                                                  Node current, int nodesVisited, List<Vector> foundTargets,
-                                                  List<Vector> targetNodes) {
+                                                  Node current, int nodesVisited, List<TargetVector> foundTargets,
+                                                  List<TargetVector> targetNodes) {
         int rows = grid.length;
         int cols = grid[0].length;
 
@@ -70,12 +71,12 @@ public class BFS implements Algorithm {
 
     private int processNeighbor(Node[][] grid, Queue<Node> queue, boolean[][] visited,
                                 Node current, int newX, int newY, int nodesVisited,
-                                List<Vector> foundTargets, List<Vector> targetNodes) {
+                                List<TargetVector> foundTargets, List<TargetVector> targetNodes) {
         int rows = grid.length;
         int cols = grid[0].length;
 
         // Check if valid move and not visited
-        if (isValid(newX, newY, rows, cols) && !visited[newX][newY]) {
+        if (isValid(newX, newY, grid, rows, cols) && !visited[newX][newY]) {
             Node neighbour = grid[newX][newY];
             neighbour.setParent(grid[current.getPosition().getX()][current.getPosition().getY()]);
             queue.add(neighbour);
@@ -84,7 +85,7 @@ public class BFS implements Algorithm {
             nodesVisited++;
         }
 
-        for (Vector target : targetNodes) {
+        for (TargetVector target : targetNodes) {
             checkAndProcessTarget(grid, newX, newY, current, target, foundTargets);
         }
 
@@ -92,7 +93,7 @@ public class BFS implements Algorithm {
     }
 
     private void checkAndProcessTarget(Node[][] grid, int newX, int newY, Node current,
-                                      Vector target, List<Vector> foundTargets) {
+                                      TargetVector target, List<TargetVector> foundTargets) {
         if (newX == target.getX() && newY == target.getY()) {
             if (!foundTargets.contains(target)) {
                 foundTargets.add(target);
@@ -110,7 +111,7 @@ public class BFS implements Algorithm {
         }
     }
 
-    private int noVisualization(Node[][] grid, Vector startNode, List<Vector> targetNodes) {
+    private int noVisualization(Node[][] grid, Vector startNode, List<TargetVector> targetNodes) {
         int rows = grid.length;
         int cols = grid[0].length;
 
@@ -148,7 +149,7 @@ public class BFS implements Algorithm {
             int newX = current.getPosition().getX() + dx[i];
             int newY = current.getPosition().getY() + dy[i];
 
-            if (isValid(newX, newY, grid.length, grid[0].length) && !visited[newX][newY]) {
+            if (isValid(newX, newY, grid, grid.length, grid[0].length) && !visited[newX][newY]) {
                 Node neighbour = grid[newX][newY];
                 neighbour.setParent(grid[current.getPosition().getX()][current.getPosition().getY()]);
                 queue.add(neighbour);
@@ -165,7 +166,7 @@ public class BFS implements Algorithm {
         }
     }
 
-    private boolean isValid(int x, int y, int rows, int cols) {
-        return x >= 0 && x < rows && y >= 0 && y < cols;
+    private boolean isValid(int x, int y, Node[][] grid, int rows, int cols) {
+        return x >= 0 && x < rows && y >= 0 && y < cols && grid[x][y].getType() != 1 ;
     }
 }
