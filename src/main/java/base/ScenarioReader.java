@@ -33,10 +33,9 @@ public class ScenarioReader {
         int obstaclePercentage = Integer.parseInt(values[3].trim());
         int numOfTargets = Integer.parseInt(values[4].trim());
         int nodesBetweenTargets = Integer.parseInt(values[5].trim());
-        int nodesFromStart = Integer.parseInt(values[6].trim());
 
         Scenario currentScenario = new Scenario(groupId, scenarioId, gridSize, obstaclePercentage,
-                numOfTargets, nodesBetweenTargets, nodesFromStart);
+                numOfTargets, nodesBetweenTargets);
         return currentScenario;
     }
 }

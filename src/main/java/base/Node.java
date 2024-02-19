@@ -8,9 +8,8 @@ public class Node {
     private Node parent;
 
     //For A* only
-    private int gCost;
-    private int hCost;
-    private int fCost;
+    private int distanceFromStart;
+    private int totalEstimatedCost;
 
     public Node(int x, int y, int type) {
         this.position = new Vector(x, y);
@@ -29,28 +28,20 @@ public class Node {
         type = i;
     }
 
-    public int getFCost() {
-        return fCost;
+    public int getTotalEstimatedCost() {
+        return totalEstimatedCost;
     }
     
-    public void setFCost(int fCost) {
-        this.fCost = fCost;
+    public void setTotalEstimatedCost(int fCost) {
+        this.totalEstimatedCost = fCost;
     }
     
-    public int getGCost() {
-        return gCost;
+    public int getDistanceFromStart() {
+        return distanceFromStart;
     }
     
-    public void setGCost(int gCost) {
-        this.gCost = gCost;
-    }
-
-    public int getHCost() {
-        return hCost;
-    }
-
-    public void setHCost(int hCost) {
-        this.hCost = hCost;
+    public void setDistanceFromStart(int gCost) {
+        this.distanceFromStart = gCost;
     }
 
     public Node getParent() {

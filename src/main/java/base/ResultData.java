@@ -27,6 +27,6 @@ public class ResultData {
 
     @Override
     public String toString() {
-        return "Execution time: " + executionTime + "ns, Nodes visited: " + nodesVisited;
+        return "Execution time: " + executionTime + "ms, Nodes visited: " + nodesVisited;
     }
 }

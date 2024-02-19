@@ -75,10 +75,6 @@ public class Frame extends JFrame {
         graphics.setColor(Color.decode("#262626"));
         graphics.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        graphics.setColor(Color.WHITE);
-        //Draw grid, tiles etc.
-        graphics.drawString("Press <space> to run all simulations actively or <enter> to run them one by one.", 50, 50);
-
         if (currentSimulation != null) {
             drawGrid(graphics);
             drawOther(graphics);

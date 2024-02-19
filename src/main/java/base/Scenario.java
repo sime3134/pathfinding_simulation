@@ -1,30 +1,24 @@
 package base;
 
 public class Scenario {
-    private int groupId;
-    private int scenarioId;
-    private int gridSize;
-    private int obstaclePercentage;
-    private int numOfTargets;
-    private int nodesBetweenTargets;
-    private int nodesFromStart;
+    private final int groupId;
+    private final int scenarioId;
+    private final int gridSize;
+    private final int obstaclePercentage;
+    private final int numOfTargets;
+    private final int nodesBetweenTargets;
 
-    public Scenario(int groupId, int scenarioId, int gridSize, int obstaclePercentage, int numOfTargets, int nodesBetweenTargets, int nodesFromStart) {
+    public Scenario(int groupId, int scenarioId, int gridSize, int obstaclePercentage, int numOfTargets, int nodesBetweenTargets) {
         this.groupId = groupId;
         this.scenarioId = scenarioId;
         this.gridSize = gridSize;
         this.obstaclePercentage = obstaclePercentage;
         this.numOfTargets = numOfTargets;
         this.nodesBetweenTargets = nodesBetweenTargets;
-        this.nodesFromStart = nodesFromStart;
     }
 
     public int getGridSize() {
         return gridSize;
-    }
-
-    public int getNodesFromStart() {
-        return nodesFromStart;
     }
 
     public int getNodesBetweenTargets() {
@@ -52,7 +46,6 @@ public class Scenario {
                 ", obstaclePercentage=" + obstaclePercentage +
                 ", numOfTargets=" + numOfTargets +
                 ", nodesBetweenTargets=" + nodesBetweenTargets +
-                ", nodesFromStart=" + nodesFromStart +
                 '}';
     }
 }
