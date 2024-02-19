@@ -19,7 +19,7 @@ public class TargetVector extends Vector implements Comparable<TargetVector> {
         if (this == obj) { // Check if it's the same object reference
             return true;
         }
-        if (obj == null) { // Check for null and class type
+        if (obj == null || getClass() != obj.getClass()) { // Check for null and class type
             return false;
         }
         Vector other = (Vector) obj; // Cast to Vector

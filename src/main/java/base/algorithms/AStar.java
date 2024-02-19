@@ -57,7 +57,7 @@ public class AStar implements Algorithm{
             }
 
             //if target
-            if (current.getPosition().equals(currentTarget)) {
+            if (current.getPosition().equalCoordinates(currentTarget)) {
                 resetNodes(current, closedSet, openSet);
                 return traversedNodes;
             }
@@ -104,7 +104,7 @@ public class AStar implements Algorithm{
             }
 
             //if target
-            if (current.getPosition().equals(currentTarget)) {
+            if (current.getPosition().equalCoordinates(currentTarget)) {
                 reconstructPath(current);
                 resetNodes(current, closedSet, openSet);
                 return traversedNodes;

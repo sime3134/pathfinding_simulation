@@ -67,7 +67,7 @@ public class Simulation {
         targetNodes = new ArrayList<>();
         for(int i = 0; i < numOfTargets; i++) {
             TargetVector position = new TargetVector(random.nextInt(0, grid.length), random.nextInt(0, grid.length));
-            if(position.equals(startNodePos) || targetNodes.contains(position) || grid[position.getX()][position.getY()].getType() == 1){
+            if(position.equalCoordinates(startNodePos) || targetNodes.contains(position) || grid[position.getX()][position.getY()].getType() == 1){
                 i--;
                 continue;
             }
