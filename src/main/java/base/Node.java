@@ -11,9 +11,16 @@ public class Node {
     private int distanceFromStart;
     private int totalEstimatedCost;
 
+    private int estimatedDistanceToTarget;
+
+    private int targetIndex;
+
     public Node(int x, int y, int type) {
         this.position = new Vector(x, y);
         this.type = type;
+        this.estimatedDistanceToTarget = 0;
+        this.distanceFromStart = Integer.MAX_VALUE;
+        this.targetIndex = 0;
     }
 
     public Vector getPosition() {
@@ -42,6 +49,22 @@ public class Node {
     
     public void setDistanceFromStart(int gCost) {
         this.distanceFromStart = gCost;
+    }
+
+    public int getEstimatedDistanceToTarget() {
+        return estimatedDistanceToTarget;
+    }
+
+    public void setEstimatedDistanceToTarget(int hCost) {
+        this.estimatedDistanceToTarget = hCost;
+    }
+
+    public int getTargetIndex() {
+        return targetIndex;
+    }
+
+    public void setTargetIndex(int targetIndex) {
+        this.targetIndex = targetIndex;
     }
 
     public Node getParent() {

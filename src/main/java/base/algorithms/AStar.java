@@ -16,16 +16,21 @@ public class AStar implements Algorithm{
 
     @Override
     public AlgorithmData run(Node[][] grid, Vector startNodePosition, List<TargetVector> targetNodePositions, boolean visualized) {
+        openSet = new PriorityQueue<>(Comparator.comparingInt(Node::getTotalEstimatedCost));
+        closedSet = new HashSet<>();
+
         int[] pathLength = new int[targetNodePositions.size()];
         boolean pathExistToAllTargets = true;
         Node startNode = grid[startNodePosition.getX()][startNodePosition.getY()];
 
         long executionTime = System.nanoTime();
         for(int i = 0; i < targetNodePositions.size(); i++) {
-            pathLength[i] = visualized ? findOneTargetWithVisualization(grid, startNode, targetNodePositions.get(i)) : findOneTarget(grid, startNode, targetNodePositions.get(i));
+            pathLength[i] = visualized ? findOneTargetWithVisualization(grid, startNode,
+                    targetNodePositions.get(i), i) : findOneTarget(grid, startNode,
+                    targetNodePositions.get(i), i);
             if(pathLength[i] == -1) {
                 pathExistToAllTargets = false;
-                System.out.println("No path to target");
+                //System.out.println("No path to target");
                 break;
             }
         }
@@ -43,14 +48,13 @@ public class AStar implements Algorithm{
         return null;
     }
 
-    private int findOneTarget(Node[][] grid, Node startNode, Vector currentTarget) {
+    private int findOneTarget(Node[][] grid, Node startNode, Vector currentTarget, int currentTargetIndex) {
         // Reset data structures and variables
-        reset();
-        // Setup start node and target
-        setup(startNode, openSet);
+        reset(startNode, openSet);
 
         while (!openSet.isEmpty()) {
             Node current = openSet.poll();
+            traversedNodes++;
 
             if(current == null) {
                 throw new NullPointerException("Current node is null");
@@ -58,7 +62,6 @@ public class AStar implements Algorithm{
 
             //if target
             if (current.getPosition().equalCoordinates(currentTarget)) {
-                resetNodes(current, closedSet, openSet);
                 return traversedNodes;
             }
 
@@ -69,19 +72,26 @@ public class AStar implements Algorithm{
                 if (closedSet.contains(neighbor) || neighbor.getType() == 1) { // 1 = obstacle
                     continue;
                 }
+                if(neighbor.getTargetIndex() != currentTargetIndex) {
+                    neighbor.setDistanceFromStart(Integer.MAX_VALUE);
+                }
 
                 // tentativeGCost is the distance from the start node to the neighbor through the current node
                 int tentativeGCost = current.getDistanceFromStart() + 1;
 
                 if (tentativeGCost < neighbor.getDistanceFromStart()) {
-                    int hCost = calculateEstimatedDistanceToTarget(neighbor, currentTarget);
+                    int estimatedDistanceToTarget = neighbor.getEstimatedDistanceToTarget();
+                    if (estimatedDistanceToTarget == 0 || neighbor.getTargetIndex() != currentTargetIndex) {
+                        estimatedDistanceToTarget = calculateEstimatedDistanceToTarget(neighbor, currentTarget);
+                        neighbor.setEstimatedDistanceToTarget(estimatedDistanceToTarget);
+                    }
+                    neighbor.setTargetIndex(currentTargetIndex);
                     neighbor.setParent(current);
                     neighbor.setDistanceFromStart(tentativeGCost);
-                    neighbor.setTotalEstimatedCost(neighbor.getDistanceFromStart() + hCost);
+                    neighbor.setTotalEstimatedCost(neighbor.getDistanceFromStart() + estimatedDistanceToTarget);
 
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor);
-                        traversedNodes++;
                     }
                 }
             }
@@ -89,15 +99,14 @@ public class AStar implements Algorithm{
         return -1;
     }
 
-    private int findOneTargetWithVisualization(Node[][] grid, Node startNode, TargetVector currentTarget) {
-        // Data structures
-        reset();
-
-        setup(startNode, openSet);
+    private int findOneTargetWithVisualization(Node[][] grid, Node startNode, TargetVector currentTarget,
+                                               int currentTargetIndex) {
+        reset(startNode, openSet);
 
         while (!openSet.isEmpty()) {
             delay(DELAY);
             Node current = openSet.poll();
+            traversedNodes++;
 
             if(current == null) {
                 throw new NullPointerException("Current node is null");
@@ -106,7 +115,6 @@ public class AStar implements Algorithm{
             //if target
             if (current.getPosition().equalCoordinates(currentTarget)) {
                 reconstructPath(current);
-                resetNodes(current, closedSet, openSet);
                 return traversedNodes;
             }
 
@@ -116,11 +124,19 @@ public class AStar implements Algorithm{
                 if (closedSet.contains(neighbor) || neighbor.getType() == 1) { // 1 = obstacle
                     continue;
                 }
+                if(neighbor.getTargetIndex() != currentTargetIndex) {
+                    neighbor.setDistanceFromStart(Integer.MAX_VALUE);
+                }
 
                 int tentativeGCost = current.getDistanceFromStart() + 1;
 
                 if (tentativeGCost < neighbor.getDistanceFromStart()) {
-                    int estimatedDistanceToTarget = calculateEstimatedDistanceToTarget(neighbor, currentTarget);
+                    int estimatedDistanceToTarget = neighbor.getEstimatedDistanceToTarget();
+                    if (estimatedDistanceToTarget == 0 || neighbor.getTargetIndex() != currentTargetIndex) {
+                        estimatedDistanceToTarget = calculateEstimatedDistanceToTarget(neighbor, currentTarget);
+                        neighbor.setEstimatedDistanceToTarget(estimatedDistanceToTarget);
+                    }
+                    neighbor.setTargetIndex(currentTargetIndex);
                     neighbor.setParent(current);
                     neighbor.setDistanceFromStart(tentativeGCost);
                     neighbor.setTotalEstimatedCost(neighbor.getDistanceFromStart() + estimatedDistanceToTarget);
@@ -128,7 +144,6 @@ public class AStar implements Algorithm{
                     if (!openSet.contains(neighbor)) {
                         openSet.add(neighbor);
                         if(neighbor.getType() != 2) neighbor.setType(3);
-                        traversedNodes++;
                     }
                 }
             }
@@ -136,15 +151,12 @@ public class AStar implements Algorithm{
         return -1;
     }
 
-    private void setup(Node startNode, PriorityQueue<Node> openSet) {
+    private void reset(Node startNode, PriorityQueue<Node> openSet) {
+        openSet.clear();
+        closedSet.clear();
+        traversedNodes = 0;
         startNode.setDistanceFromStart(0); // The cost from the start to the start is 0
         openSet.add(startNode);
-    }
-
-    private void reset() {
-        openSet = new PriorityQueue<>(Comparator.comparingInt(Node::getTotalEstimatedCost));
-        closedSet = new HashSet<>();
-        traversedNodes = 0;
     }
 
     private void reconstructPath(Node current) {
@@ -152,19 +164,6 @@ public class AStar implements Algorithm{
         while (parent.getParent() != null) {
             parent.setType(2);
             parent = parent.getParent();
-        }
-    }
-
-    private void resetNodes(Node current, HashSet<Node> closedSet, PriorityQueue<Node> openSet) {
-        current.setParent(null);
-        current.setDistanceFromStart(Integer.MAX_VALUE);
-        for(Node node : closedSet) {
-            node.setParent(null);
-            node.setDistanceFromStart(Integer.MAX_VALUE);
-        }
-        for(Node node : openSet) {
-            node.setParent(null);
-            node.setDistanceFromStart(Integer.MAX_VALUE);
         }
     }
 

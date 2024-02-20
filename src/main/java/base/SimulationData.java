@@ -1,8 +1,8 @@
 package base;
 
 public class SimulationData {
-    private AlgorithmData aStarData;
-    private AlgorithmData bfsData;
+    private final AlgorithmData aStarData;
+    private final AlgorithmData bfsData;
 
     public SimulationData(AlgorithmData aStarData, AlgorithmData bfsData) {
         this.aStarData = aStarData;

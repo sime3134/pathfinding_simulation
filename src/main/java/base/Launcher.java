@@ -1,18 +1,17 @@
 package base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Launcher {
 
-    private static final int SIMULATIONS_PER_SCENARIO = 1000;
+    private static final int SIMULATIONS_PER_SCENARIO = 10000;
+    private static int totalNumberOfSimulations = 0;
 
     public static void main(String[] args) {
         System.out.println("base.Simulation Launched");
         ScenarioReader scenarioReader = new ScenarioReader();
-        ArrayList<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
+        List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
+        totalNumberOfSimulations = scenarios.size() * SIMULATIONS_PER_SCENARIO;
         HashMap<Integer, ScenarioGroupData> groups = new HashMap<>();
 
         Scanner scanner = new Scanner(System.in);
@@ -31,18 +30,25 @@ public class Launcher {
         }
     }
 
-    private static void runData(ArrayList<Scenario> scenarios, HashMap<Integer, ScenarioGroupData> groups) {
-        for (Scenario scenario : scenarios) {
-            ScenarioGroupData scenarioGroupData = getScenarioGroupData(groups, scenario);
-            ScenarioData scenarioData = new ScenarioData(scenario);
-            System.out.println(scenario);
-            for(int i = 0; i < SIMULATIONS_PER_SCENARIO; i++) {
-                Simulation currentSimulation = new Simulation(scenario);
+    private static void runData(List<Scenario> scenarios, HashMap<Integer, ScenarioGroupData> groups) {
+        int progressPercentage = 0;
+        for (int i = 0; i < scenarios.size(); i++) {
+            ScenarioGroupData scenarioGroupData = getScenarioGroupData(groups, scenarios.get(i));
+            ScenarioData scenarioData = new ScenarioData(scenarios.get(i));
+            System.out.println(scenarios.get(i));
+            for(int j = 0; j < SIMULATIONS_PER_SCENARIO; j++) {
+                Simulation currentSimulation = new Simulation(scenarios.get(i));
                 SimulationData data = currentSimulation.run(false);
                 if(data == null) {
-                    i--;
+                    j--;
                 } else {
                     scenarioData.addSimulationData(data);
+                }
+                int newProgressPercentage =
+                        (int) (((double) (i * SIMULATIONS_PER_SCENARIO + j) / totalNumberOfSimulations) * 100);
+                if(newProgressPercentage > progressPercentage) {
+                    progressPercentage = newProgressPercentage;
+                    System.out.println(progressPercentage + "%");
                 }
             }
             scenarioData.calculateAverages();
@@ -51,7 +57,7 @@ public class Launcher {
         CSVWriter.write(groups);
     }
 
-    private static void runVisualized(ArrayList<Scenario> scenarios) {
+    private static void runVisualized(List<Scenario> scenarios) {
         Frame frame = new Frame();
 
         for (Scenario scenario : scenarios) {

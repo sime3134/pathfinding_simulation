@@ -34,7 +34,6 @@ public class Simulation {
 
                 grid[i][j] = new Node(i, j, 0);
                 if(type == 1) grid[i][j].setType(type);
-                grid[i][j].setDistanceFromStart(Integer.MAX_VALUE);
             }
         }
     }
@@ -81,12 +80,14 @@ public class Simulation {
     public SimulationData run (boolean visualizationMode) {
 
         Algorithm currentAlgorithm = new AStar();
-        AlgorithmData algorithmData = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
-        if(algorithmData == null) {
+        AlgorithmData algorithmDataAStar = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
+        if(algorithmDataAStar == null) {
             return null;
         }
-        System.out.println("A*:   " + algorithmData);
-        if(visualizationMode) delay(2000);
+        if(visualizationMode) {
+            System.out.println("A*:   " + algorithmDataAStar);
+            delay(2000);
+        }
 
         initiateGrid(false);
 
@@ -95,10 +96,12 @@ public class Simulation {
         if(algorithmDataBFS == null) {
             return null;
         }
-        System.out.println("BFS:   " + algorithmDataBFS);
-        if(visualizationMode) delay(2000);
+        if(visualizationMode) {
+            System.out.println("BFS:  " + algorithmDataBFS);
+            delay(2000);
+        }
 
-        return new SimulationData(algorithmData, algorithmDataBFS);
+        return new SimulationData(algorithmDataAStar, algorithmDataBFS);
         }
 
     public int getGridSize() {

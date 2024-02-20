@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScenarioReader {
-    private ArrayList<Scenario> scenarios = new ArrayList<>();
-    public ScenarioReader() {
-    }
+    private final List<Scenario> scenarios = new ArrayList<>();
 
-    public ArrayList<Scenario> readFromFile(String textFile) {
+    public List<Scenario> readFromFile(String textFile) {
         try (BufferedReader reader = new BufferedReader(new FileReader(textFile))) {
 
             String line;
@@ -34,8 +33,7 @@ public class ScenarioReader {
         int numOfTargets = Integer.parseInt(values[4].trim());
         int nodesBetweenTargets = Integer.parseInt(values[5].trim());
 
-        Scenario currentScenario = new Scenario(groupId, scenarioId, gridSize, obstaclePercentage,
+        return new Scenario(groupId, scenarioId, gridSize, obstaclePercentage,
                 numOfTargets, nodesBetweenTargets);
-        return currentScenario;
     }
 }

@@ -53,9 +53,6 @@ public class BFS implements Algorithm {
     private int exploreNeighborsWithVisualization(Node[][] grid, Queue<Node> queue, boolean[][] visited,
                                                   Node current, int nodesVisited, List<TargetVector> foundTargets,
                                                   List<TargetVector> targetNodes) {
-        int rows = grid.length;
-        int cols = grid[0].length;
-
         // Directions (Up, Down, Left, Right)
         int[] dx = {0, 0, -1, 1};
         int[] dy = {-1, 1, 0, 0};
