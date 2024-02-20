@@ -47,7 +47,7 @@ public class AStar implements Algorithm{
         // Reset data structures and variables
         reset();
         // Setup start node and target
-        setup(startNode, currentTarget, openSet);
+        setup(startNode, openSet);
 
         while (!openSet.isEmpty()) {
             Node current = openSet.poll();
@@ -93,7 +93,7 @@ public class AStar implements Algorithm{
         // Data structures
         reset();
 
-        setup(startNode, currentTarget, openSet);
+        setup(startNode, openSet);
 
         while (!openSet.isEmpty()) {
             delay(DELAY);
