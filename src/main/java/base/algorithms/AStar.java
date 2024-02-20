@@ -1,7 +1,7 @@
 package base.algorithms;
 
 import base.Node;
-import base.ResultData;
+import base.AlgorithmData;
 import base.TargetVector;
 import base.Vector;
 import java.util.*;
@@ -15,7 +15,7 @@ public class AStar implements Algorithm{
     private int traversedNodes;
 
     @Override
-    public ResultData run(Node[][] grid, Vector startNodePosition, List<TargetVector> targetNodePositions, boolean visualized) {
+    public AlgorithmData run(Node[][] grid, Vector startNodePosition, List<TargetVector> targetNodePositions, boolean visualized) {
         int[] pathLength = new int[targetNodePositions.size()];
         boolean pathExistToAllTargets = true;
         Node startNode = grid[startNodePosition.getX()][startNodePosition.getY()];
@@ -32,7 +32,7 @@ public class AStar implements Algorithm{
         executionTime = (System.nanoTime() - executionTime) / 1000;
 
         if(pathExistToAllTargets) {
-            ResultData finalResult = new ResultData(0,0);
+            AlgorithmData finalResult = new AlgorithmData(0,0);
             for(int nodesVisited : pathLength) {
                 finalResult.setNodesVisited(finalResult.getNodesVisited() + nodesVisited);
             }
@@ -136,7 +136,7 @@ public class AStar implements Algorithm{
         return -1;
     }
 
-    private void setup(Node startNode, Vector currentTarget, PriorityQueue<Node> openSet) {
+    private void setup(Node startNode, PriorityQueue<Node> openSet) {
         startNode.setDistanceFromStart(0); // The cost from the start to the start is 0
         openSet.add(startNode);
     }

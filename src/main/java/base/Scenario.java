@@ -37,6 +37,10 @@ public class Scenario {
         return scenarioId;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
     @Override
     public String toString() {
         return "base.Scenario{" +

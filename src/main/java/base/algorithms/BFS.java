@@ -1,7 +1,7 @@
 package base.algorithms;
 
 import base.Node;
-import base.ResultData;
+import base.AlgorithmData;
 import base.TargetVector;
 import base.Vector;
 
@@ -16,7 +16,7 @@ public class BFS implements Algorithm {
 
     private static final int DELAY = 5;
     @Override
-    public ResultData run(Node[][] grid, Vector startNode, List<TargetVector> targetNodes, boolean visualizationMode) {
+    public AlgorithmData run(Node[][] grid, Vector startNode, List<TargetVector> targetNodes, boolean visualizationMode) {
         long startTime = System.nanoTime();
         int nodesVisited;
 
@@ -27,7 +27,7 @@ public class BFS implements Algorithm {
         }
         long endTime = System.nanoTime();
         long executionTimeInMicros = (endTime - startTime) / 1000; // Convert to milliseconds
-        return new ResultData(executionTimeInMicros, nodesVisited);
+        return new AlgorithmData(executionTimeInMicros, nodesVisited);
     }
 
     private int withVisualization(Node[][] grid, Vector startNode, List<TargetVector> targetNodes) {

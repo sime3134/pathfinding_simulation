@@ -78,27 +78,27 @@ public class Simulation {
         Collections.sort(targetNodes);
     }
 
-    public boolean run (boolean visualizationMode) {
+    public SimulationData run (boolean visualizationMode) {
+
         Algorithm currentAlgorithm = new AStar();
-        ResultData resultData = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
-        if(resultData == null) {
-            return false;
+        AlgorithmData algorithmData = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
+        if(algorithmData == null) {
+            return null;
         }
-        System.out.println("A*:   " + resultData);
+        System.out.println("A*:   " + algorithmData);
         if(visualizationMode) delay(2000);
 
         initiateGrid(false);
 
         currentAlgorithm = new BFS();
-        ResultData resultDataBFS = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
-        if(resultDataBFS == null) {
-            return false;
+        AlgorithmData algorithmDataBFS = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
+        if(algorithmDataBFS == null) {
+            return null;
         }
-        System.out.println("BFS:   " + resultDataBFS);
+        System.out.println("BFS:   " + algorithmDataBFS);
         if(visualizationMode) delay(2000);
 
-        //Do something with the data
-        return true;
+        return new SimulationData(algorithmData, algorithmDataBFS);
         }
 
     public int getGridSize() {

@@ -1,10 +1,10 @@
 package base;
 
-public class ResultData {
+public class AlgorithmData {
     private long executionTime;
     private int nodesVisited;
 
-    public ResultData(long executionTime, int nodesVisited) {
+    public AlgorithmData(long executionTime, int nodesVisited) {
         this.executionTime = executionTime;
         this.nodesVisited = nodesVisited;
     }
