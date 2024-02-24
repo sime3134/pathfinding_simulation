@@ -23,7 +23,7 @@ public class Simulation {
         initiateGrid(true);
         generateObstacles(scenario.getObstaclePercentage());
         generateStartNode();
-        generateTargetNodes(scenario.getNumOfTargets(), scenario.getNodesBetweenTargets());
+        generateTargetNodes(scenario.getNumOfTargets());
     }
 
     private void initiateGrid(boolean firstTime) {
@@ -62,7 +62,7 @@ public class Simulation {
         }
     }
 
-    public void generateTargetNodes(int numOfTargets, int nodesBetweenTargets) {
+    public void generateTargetNodes(int numOfTargets) {
         targetNodes = new ArrayList<>();
         for(int i = 0; i < numOfTargets; i++) {
             TargetVector position = new TargetVector(random.nextInt(0, grid.length), random.nextInt(0, grid.length));

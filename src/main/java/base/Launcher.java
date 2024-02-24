@@ -4,20 +4,20 @@ import java.util.*;
 
 public class Launcher {
 
-    private static final int SIMULATIONS_PER_SCENARIO = 10000;
+    private static final int SIMULATIONS_PER_SCENARIO = 15000;
     private static int totalNumberOfSimulations = 0;
 
     public static void main(String[] args) {
-        System.out.println("base.Simulation Launched");
+        System.out.println("Simulation Launched");
         ScenarioReader scenarioReader = new ScenarioReader();
         List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
         totalNumberOfSimulations = scenarios.size() * SIMULATIONS_PER_SCENARIO;
-        HashMap<Integer, ScenarioGroupData> groups = new HashMap<>();
+        HashMap<String, ScenarioGroupData> groups = new HashMap<>();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the motherfucking BFS vs A* simulation");
+        System.out.println("Welcome to the BFS vs A* simulation");
         System.out.println("Press 1 to run a visualization of the simulation");
-        System.out.println("Press 2 to run the simulation to get hardcore data");
+        System.out.println("Press 2 to run the simulation to get data");
         System.out.println("Press 3 exit the system");
         String input = scanner.nextLine();
         if(Objects.equals(input, "1")) {
@@ -30,11 +30,13 @@ public class Launcher {
         }
     }
 
-    private static void runData(List<Scenario> scenarios, HashMap<Integer, ScenarioGroupData> groups) {
+    private static void runData(List<Scenario> scenarios, HashMap<String, ScenarioGroupData> groups) {
         int progressPercentage = 0;
+        String currentGroup = "";
         for (int i = 0; i < scenarios.size(); i++) {
             ScenarioGroupData scenarioGroupData = getScenarioGroupData(groups, scenarios.get(i));
             ScenarioData scenarioData = new ScenarioData(scenarios.get(i));
+            currentGroup = scenarios.get(i).getGroupName();
             System.out.println(scenarios.get(i));
             for(int j = 0; j < SIMULATIONS_PER_SCENARIO; j++) {
                 Simulation currentSimulation = new Simulation(scenarios.get(i));
@@ -53,8 +55,10 @@ public class Launcher {
             }
             scenarioData.calculateAverages();
             scenarioGroupData.addScenarioData(scenarioData);
+            if (i == scenarios.size() - 1 || !scenarios.get(i + 1).getGroupName().equals(currentGroup)) {
+                CSVWriter.write(scenarioGroupData);
+            }
         }
-        CSVWriter.write(groups);
     }
 
     private static void runVisualized(List<Scenario> scenarios) {
@@ -74,13 +78,13 @@ public class Launcher {
         }
     }
 
-    private static ScenarioGroupData getScenarioGroupData(HashMap<Integer, ScenarioGroupData> groups,
+    private static ScenarioGroupData getScenarioGroupData(HashMap<String, ScenarioGroupData> groups,
                                                           Scenario scenario) {
-        if(groups.containsKey(scenario.getGroupId())) {
-            return groups.get(scenario.getGroupId());
+        if(groups.containsKey(scenario.getGroupName())) {
+            return groups.get(scenario.getGroupName());
         } else {
             ScenarioGroupData scenarioGroupData = new ScenarioGroupData();
-            groups.put(scenario.getGroupId(), scenarioGroupData);
+            groups.put(scenario.getGroupName(), scenarioGroupData);
             return scenarioGroupData;
         }
     }

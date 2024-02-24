@@ -7,8 +7,8 @@ public class ScenarioData {
     private final List<SimulationData> data;
     private long averageAStarExecutionTime;
     private long averageBFSExecutionTime;
-    private int averageAStarNodesVisited;
-    private int averageBFSNodesVisited;
+    private long averageAStarNodesVisited;
+    private long averageBFSNodesVisited;
 
     private final Scenario scenario;
 
@@ -24,8 +24,8 @@ public class ScenarioData {
     public void calculateAverages() {
         long totalAStarExecutionTime = 0;
         long totalBFSExecutionTime = 0;
-        int totalAStarNodesVisited = 0;
-        int totalBFSNodesVisited = 0;
+        long totalAStarNodesVisited = 0;
+        long totalBFSNodesVisited = 0;
         for (SimulationData simulationData : data) {
             totalAStarExecutionTime += simulationData.getAStarData().getExecutionTime();
             totalBFSExecutionTime += simulationData.getBfsData().getExecutionTime();
@@ -50,11 +50,11 @@ public class ScenarioData {
         return averageBFSExecutionTime;
     }
 
-    public int getAverageAStarNodesVisited() {
+    public long getAverageAStarNodesVisited() {
         return averageAStarNodesVisited;
     }
 
-    public int getAverageBFSNodesVisited() {
+    public long getAverageBFSNodesVisited() {
         return averageBFSNodesVisited;
     }
 }

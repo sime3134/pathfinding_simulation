@@ -5,22 +5,23 @@ import java.io.IOException;
 import java.util.Map;
 
 public class CSVWriter {
-    public static void write(Map<Integer, ScenarioGroupData> groups) {
+    public static void write(ScenarioGroupData group) {
         System.out.println("Writing to CSV");
-        for (Integer key : groups.keySet()) {
-            ScenarioGroupData scenarioGroupData = groups.get(key);
-            writeScenarioGroupData(scenarioGroupData, key);
-        }
-
+        String groupName = group.getData().get(0).getScenario().getGroupName();
+        writeScenarioGroupData(group, groupName);
     }
 
-    private static void writeScenarioGroupData(ScenarioGroupData scenarioGroupData, int groupId) {
+    private static void writeScenarioGroupData(ScenarioGroupData scenarioGroupData, String groupName) {
         try {
-            FileWriter writer = new FileWriter("src/main/resources/scenario_group" + groupId + ".csv", true);
-            writer.append("ScenarioId,AStarExecutionTime,BFSExecutionTime,AStarNodesVisited,BFSNodesVisited");
+            FileWriter writer = new FileWriter("src/main/resources/" + groupName + ".csv", true);
+            writer.append("ScenarioId,").append(scenarioGroupData.getValueBeingComparedText()).append(",A* Execution ").append("Time,BFS ").append("Execution Time,").append("A* ").append("Nodes ").append("Visited,").append(
+                    "BFS " +
+                    "Nodes Visited");
             writer.append("\n");
             for (ScenarioData scenarioData : scenarioGroupData.getData()) {
                 writer.append(String.valueOf(scenarioData.getScenario().getScenarioId()));
+                writer.append(",");
+                writer.append(String.valueOf(scenarioData.getScenario().getValueBeingCompared()));
                 writer.append(",");
                 writer.append(String.valueOf(scenarioData.getAverageAStarExecutionTime()));
                 writer.append(",");

@@ -17,4 +17,8 @@ public class ScenarioGroupData {
     public List<ScenarioData> getData() {
         return data;
     }
+
+    public String getValueBeingComparedText() {
+        return data.get(0).getScenario().getValueBeingComparedText();
+    }
 }

@@ -26,14 +26,14 @@ public class ScenarioReader {
     }
 
     private static Scenario getScenario(String[] values) {
-        int groupId = Integer.parseInt(values[0].trim());
+        String groupName = values[0].trim();
         int scenarioId = Integer.parseInt(values[1].trim());
-        int gridSize = Integer.parseInt(values[2].trim());
-        double obstaclePercentage = Double.parseDouble(values[3].trim());
-        int numOfTargets = Integer.parseInt(values[4].trim());
-        int nodesBetweenTargets = Integer.parseInt(values[5].trim());
+        int valueBeingCompared = Integer.parseInt(values[2].trim());
+        int gridSize = Integer.parseInt(values[3].trim());
+        double obstaclePercentage = Double.parseDouble(values[4].trim());
+        int numOfTargets = Integer.parseInt(values[5].trim());
 
-        return new Scenario(groupId, scenarioId, gridSize, obstaclePercentage,
-                numOfTargets, nodesBetweenTargets);
+        return new Scenario(groupName, scenarioId, valueBeingCompared, gridSize, obstaclePercentage,
+                numOfTargets);
     }
 }
