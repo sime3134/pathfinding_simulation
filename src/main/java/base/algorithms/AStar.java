@@ -1,7 +1,7 @@
 package base.algorithms;
 
 import base.Node;
-import base.AlgorithmData;
+import base.data.AlgorithmData;
 import base.TargetVector;
 import base.Vector;
 import java.util.*;
@@ -11,13 +11,13 @@ import static base.Helpers.delay;
 public class AStar implements Algorithm{
     private static final int DELAY = 5;
     private PriorityQueue<Node> openSet;
-    private HashSet<Node> closedSet;
+    private HashMap<Node, Integer> costSoFar;
     private int traversedNodes;
 
     @Override
     public AlgorithmData run(Node[][] grid, Vector startNodePosition, List<TargetVector> targetNodePositions, boolean visualized) {
         openSet = new PriorityQueue<>(Comparator.comparingInt(Node::getTotalEstimatedCost));
-        closedSet = new HashSet<>();
+        costSoFar = new HashMap<>();
 
         int[] pathLength = new int[targetNodePositions.size()];
         boolean pathExistToAllTargets = true;
@@ -65,21 +65,16 @@ public class AStar implements Algorithm{
                 return traversedNodes;
             }
 
-            closedSet.add(current);
-
             // Check all neighbors of the current node.
             for (Node neighbor : getNeighbors(current, grid)) {
-                if (closedSet.contains(neighbor) || neighbor.getType() == 1) { // 1 = obstacle
+                if (costSoFar.containsKey(neighbor)) {
                     continue;
-                }
-                if(neighbor.getTargetIndex() != currentTargetIndex) {
-                    neighbor.setDistanceFromStart(Integer.MAX_VALUE);
                 }
 
                 // tentativeGCost is the distance from the start node to the neighbor through the current node
-                int tentativeGCost = current.getDistanceFromStart() + 1;
+                int tentativeGCost = costSoFar.get(current) + 1;
 
-                if (tentativeGCost < neighbor.getDistanceFromStart()) {
+                if (!costSoFar.containsKey(neighbor) || tentativeGCost < costSoFar.get(neighbor)) {
                     int estimatedDistanceToTarget = neighbor.getEstimatedDistanceToTarget();
                     if (estimatedDistanceToTarget == 0 || neighbor.getTargetIndex() != currentTargetIndex) {
                         estimatedDistanceToTarget = calculateEstimatedDistanceToTarget(neighbor, currentTarget);
@@ -87,12 +82,9 @@ public class AStar implements Algorithm{
                     }
                     neighbor.setTargetIndex(currentTargetIndex);
                     neighbor.setParent(current);
-                    neighbor.setDistanceFromStart(tentativeGCost);
-                    neighbor.setTotalEstimatedCost(neighbor.getDistanceFromStart() + estimatedDistanceToTarget);
-
-                    if (!openSet.contains(neighbor)) {
-                        openSet.add(neighbor);
-                    }
+                    costSoFar.put(neighbor, tentativeGCost);
+                    neighbor.setTotalEstimatedCost(tentativeGCost + estimatedDistanceToTarget);
+                    openSet.add(neighbor);
                 }
             }
         }
@@ -118,19 +110,15 @@ public class AStar implements Algorithm{
                 return traversedNodes;
             }
 
-            closedSet.add(current);
-
             for (Node neighbor : getNeighbors(current, grid)) {
-                if (closedSet.contains(neighbor) || neighbor.getType() == 1) { // 1 = obstacle
+                if (costSoFar.containsKey(neighbor)) {
                     continue;
                 }
-                if(neighbor.getTargetIndex() != currentTargetIndex) {
-                    neighbor.setDistanceFromStart(Integer.MAX_VALUE);
-                }
 
-                int tentativeGCost = current.getDistanceFromStart() + 1;
+                // tentativeGCost is the distance from the start node to the neighbor through the current node
+                int tentativeGCost = costSoFar.get(current) + 1;
 
-                if (tentativeGCost < neighbor.getDistanceFromStart()) {
+                if (!costSoFar.containsKey(neighbor) || tentativeGCost < costSoFar.get(neighbor)) {
                     int estimatedDistanceToTarget = neighbor.getEstimatedDistanceToTarget();
                     if (estimatedDistanceToTarget == 0 || neighbor.getTargetIndex() != currentTargetIndex) {
                         estimatedDistanceToTarget = calculateEstimatedDistanceToTarget(neighbor, currentTarget);
@@ -138,13 +126,10 @@ public class AStar implements Algorithm{
                     }
                     neighbor.setTargetIndex(currentTargetIndex);
                     neighbor.setParent(current);
-                    neighbor.setDistanceFromStart(tentativeGCost);
-                    neighbor.setTotalEstimatedCost(neighbor.getDistanceFromStart() + estimatedDistanceToTarget);
-
-                    if (!openSet.contains(neighbor)) {
-                        openSet.add(neighbor);
-                        if(neighbor.getType() != 2) neighbor.setType(3);
-                    }
+                    costSoFar.put(neighbor, tentativeGCost);
+                    neighbor.setTotalEstimatedCost(tentativeGCost + estimatedDistanceToTarget);
+                    openSet.add(neighbor);
+                    if(neighbor.getType() != 2) neighbor.setType(3);
                 }
             }
         }
@@ -153,10 +138,10 @@ public class AStar implements Algorithm{
 
     private void reset(Node startNode, PriorityQueue<Node> openSet) {
         openSet.clear();
-        closedSet.clear();
         traversedNodes = 0;
-        startNode.setDistanceFromStart(0); // The cost from the start to the start is 0
+        costSoFar.clear();
         openSet.add(startNode);
+        costSoFar.put(startNode, 0);
     }
 
     private void reconstructPath(Node current) {
@@ -171,12 +156,17 @@ public class AStar implements Algorithm{
         List<Node> neighbors = new ArrayList<>();
         int rows = grid.length;
         int cols = grid[0].length;
+        int x = node.getPosition().getX();
+        int y = node.getPosition().getY();
 
-        // Check cardinal directions
-        if (node.getPosition().getY() > 0) neighbors.add(grid[node.getPosition().getX()][node.getPosition().getY() - 1]);
-        if (node.getPosition().getY() < rows - 1) neighbors.add(grid[node.getPosition().getX()][node.getPosition().getY() + 1]);
-        if (node.getPosition().getX() > 0) neighbors.add(grid[node.getPosition().getX() - 1][node.getPosition().getY()]);
-        if (node.getPosition().getX() < cols - 1) neighbors.add(grid[node.getPosition().getX() + 1][node.getPosition().getY()]);
+        // North
+        if (y > 0 && node.getType() != 1) neighbors.add(grid[x][y - 1]);
+        // South
+        if (y < rows - 1 && node.getType() != 1) neighbors.add(grid[x][y + 1]);
+        // West
+        if (x > 0 && node.getType() != 1) neighbors.add(grid[x - 1][y]);
+        // East
+        if (x < cols - 1 && node.getType() != 1) neighbors.add(grid[x + 1][y]);
 
         return neighbors;
     }

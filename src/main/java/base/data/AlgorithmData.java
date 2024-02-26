@@ -1,4 +1,4 @@
-package base;
+package base.data;
 
 public class AlgorithmData {
     private long executionTime;

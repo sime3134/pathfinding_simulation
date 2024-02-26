@@ -1,10 +1,14 @@
 package base;
 
+import base.data.DeviationData;
+import base.data.ScenarioData;
+import base.data.ScenarioGroupData;
+import base.data.SimulationData;
 import java.util.*;
 
 public class Launcher {
 
-    private static final int SIMULATIONS_PER_SCENARIO = 15000;
+    private static final int SIMULATIONS_PER_SCENARIO = 1000;
     private static int totalNumberOfSimulations = 0;
 
     public static void main(String[] args) {
@@ -12,7 +16,6 @@ public class Launcher {
         ScenarioReader scenarioReader = new ScenarioReader();
         List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
         totalNumberOfSimulations = scenarios.size() * SIMULATIONS_PER_SCENARIO;
-        HashMap<String, ScenarioGroupData> groups = new HashMap<>();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the BFS vs A* simulation");
@@ -23,16 +26,19 @@ public class Launcher {
         if(Objects.equals(input, "1")) {
             runVisualized(scenarios);
         } else if (Objects.equals(input, "2")) {
-            runData(scenarios, groups);
+            runData(scenarios);
         }
         else {
             System.out.println("Thank you, come again!");
         }
     }
 
-    private static void runData(List<Scenario> scenarios, HashMap<String, ScenarioGroupData> groups) {
+    private static void runData(List<Scenario> scenarios) {
+        HashMap<String, ScenarioGroupData> groups = new HashMap<>();
         int progressPercentage = 0;
-        String currentGroup = "";
+        String currentGroup;
+        List<DeviationData> deviationDataList = new ArrayList<>();
+
         for (int i = 0; i < scenarios.size(); i++) {
             ScenarioGroupData scenarioGroupData = getScenarioGroupData(groups, scenarios.get(i));
             ScenarioData scenarioData = new ScenarioData(scenarios.get(i));
@@ -53,12 +59,17 @@ public class Launcher {
                     System.out.println(progressPercentage + "%");
                 }
             }
+            CSVWriter.writeSingleScenario(scenarioData);
             scenarioData.calculateAverages();
+            DeviationData deviationData = scenarioData.standardDeviation();
+            deviationDataList.add(deviationData);
             scenarioGroupData.addScenarioData(scenarioData);
+            // If the next scenario is from a different group, write the current group data to a file
             if (i == scenarios.size() - 1 || !scenarios.get(i + 1).getGroupName().equals(currentGroup)) {
-                CSVWriter.write(scenarioGroupData);
+                CSVWriter.writeScenarioGroupData(scenarioGroupData);
             }
         }
+        CSVWriter.writeDeviationData(deviationDataList);
     }
 
     private static void runVisualized(List<Scenario> scenarios) {

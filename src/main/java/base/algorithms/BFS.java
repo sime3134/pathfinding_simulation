@@ -1,7 +1,7 @@
 package base.algorithms;
 
 import base.Node;
-import base.AlgorithmData;
+import base.data.AlgorithmData;
 import base.TargetVector;
 import base.Vector;
 
@@ -53,9 +53,12 @@ public class BFS implements Algorithm {
     private int exploreNeighborsWithVisualization(Node[][] grid, Queue<Node> queue, boolean[][] visited,
                                                   Node current, int nodesVisited, List<TargetVector> foundTargets,
                                                   List<TargetVector> targetNodes) {
-        // Directions (Up, Down, Left, Right)
+        // 4 way
         int[] dx = {0, 0, -1, 1};
         int[] dy = {-1, 1, 0, 0};
+        //8 way
+        //int[] dx = {0, 0, -1, 1, -1, -1, 1, 1};
+        //int[] dy = {-1, 1, 0, 0, -1, 1, -1, 1};
 
         for (int i = 0; i < 4; i++) {
             int newX = current.getPosition().getX() + dx[i];
@@ -138,9 +141,13 @@ public class BFS implements Algorithm {
     }
 
     private void exploreNeighbors(Queue<Node> queue, Node[][] grid, boolean[][] visited, Node current) {
-
+        //4 way
         int[] dx = {0, 0, -1, 1};
         int[] dy = {-1, 1, 0, 0};
+        //8 way
+        //int[] dx = {0, 0, -1, 1, -1, -1, 1, 1};
+        //int[] dy = {-1, 1, 0, 0, -1, 1, -1, 1};
+
 
         for (int i = 0; i < 4; i++) {
             int newX = current.getPosition().getX() + dx[i];

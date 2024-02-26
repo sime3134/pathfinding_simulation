@@ -1,0 +1,8 @@
+ScenarioId,Grid size,A* Execution Time,BFS Execution Time,A* Nodes Visited,BFS Nodes Visited
+35,8,2,1,12,30
+36,16,7,6,30,120
+37,32,22,24,81,487
+38,64,62,105,216,1794
+39,128,248,649,739,7447
+40,256,932,3862,2527,29473
+41,512,3880,18116,9436,118932

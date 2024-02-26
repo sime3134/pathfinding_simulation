@@ -1,4 +1,4 @@
-package base;
+package base.data;
 
 public class SimulationData {
     private final AlgorithmData aStarData;

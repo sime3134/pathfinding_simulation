@@ -1,7 +1,7 @@
 package base.algorithms;
 
 import base.Node;
-import base.AlgorithmData;
+import base.data.AlgorithmData;
 import base.TargetVector;
 import base.Vector;
 

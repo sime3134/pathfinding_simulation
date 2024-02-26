@@ -1,4 +1,6 @@
-package base;
+package base.data;
+
+import base.data.ScenarioData;
 
 import java.util.ArrayList;
 import java.util.List;

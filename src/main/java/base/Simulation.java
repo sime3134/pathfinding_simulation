@@ -3,6 +3,8 @@ package base;
 import base.algorithms.AStar;
 import base.algorithms.Algorithm;
 import base.algorithms.BFS;
+import base.data.AlgorithmData;
+import base.data.SimulationData;
 
 import java.util.ArrayList;
 import java.util.Collections;

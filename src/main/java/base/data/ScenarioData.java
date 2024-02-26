@@ -1,4 +1,6 @@
-package base;
+package base.data;
+
+import base.Scenario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,10 @@ public class ScenarioData {
         averageBFSNodesVisited = totalBFSNodesVisited / data.size();
     }
 
+    public List<SimulationData> getSimulationData() {
+        return data;
+    }
+
     public Scenario getScenario() {
         return scenario;
     }
@@ -56,5 +62,28 @@ public class ScenarioData {
 
     public long getAverageBFSNodesVisited() {
         return averageBFSNodesVisited;
+    }
+
+    public DeviationData standardDeviation() {
+        double aStarExecutionTimeVariance = 0;
+        double bfsExecutionTimeVariance = 0;
+        double aStarNodesVisitedVariance = 0;
+        double bfsNodesVisitedVariance = 0;
+        for (SimulationData simulationData : data) {
+            aStarExecutionTimeVariance += Math.pow(simulationData.getAStarData().getExecutionTime() - (double) averageAStarExecutionTime, 2);
+            bfsExecutionTimeVariance += Math.pow(simulationData.getBfsData().getExecutionTime() - (double) averageBFSExecutionTime, 2);
+            aStarNodesVisitedVariance += Math.pow(simulationData.getAStarData().getNodesVisited() - (double) averageAStarNodesVisited, 2);
+            bfsNodesVisitedVariance += Math.pow(simulationData.getBfsData().getNodesVisited() - (double) averageBFSNodesVisited, 2);
+        }
+        double aStarExecutionTimeStandardDeviation =
+                Math.sqrt( aStarExecutionTimeVariance / data.size());
+        double bfsExecutionTimeStandardDeviation =
+                Math.sqrt(bfsExecutionTimeVariance / data.size());
+        double aStarNodesVisitedStandardDeviation =
+                Math.sqrt(aStarNodesVisitedVariance / data.size());
+        double bfsNodesVisitedStandardDeviation = Math.sqrt(bfsNodesVisitedVariance / data.size());
+        return new DeviationData(scenario.getScenarioId(), aStarExecutionTimeStandardDeviation,
+                bfsExecutionTimeStandardDeviation,
+                aStarNodesVisitedStandardDeviation, bfsNodesVisitedStandardDeviation);
     }
 }
