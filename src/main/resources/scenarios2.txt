@@ -1,8 +1,8 @@
-obstacle_multi, 1, 1, 64, 0, 2
-obstacle_multi, 2, 1, 64, 0.05, 2
-obstacle_multi, 3, 1, 64, 0.1, 2
-obstacle_multi, 4, 1, 64, 0.15, 2
-obstacle_multi, 5, 1, 64, 0.2, 2
+obstacle_multi, 1, 1, 16, 0, 2
+obstacle_multi, 2, 1, 16, 0.05, 2
+obstacle_multi, 3, 1, 16, 0.1, 2
+obstacle_multi, 4, 1, 16, 0.15, 2
+obstacle_multi, 5, 1, 16, 0.2, 2
 obstacle_multi, 6, 1, 64, 0.25, 2
 obstacle_multi, 7, 1, 64, 0.3, 2
 obstacle_multi, 8, 1, 64, 0.35, 2

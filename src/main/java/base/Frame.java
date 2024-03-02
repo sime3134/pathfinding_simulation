@@ -148,11 +148,14 @@ public class Frame extends JFrame {
 
         GradientPaint gradient = new GradientPaint(
                 x, y, lighterColor,
-                x + cellSize, y + cellSize, darkerColor);
+                x + (float)cellSize, y + (float)cellSize, darkerColor);
 
         g2d.setPaint(gradient);
 
         g2d.fillRect(x + 1, y + 1,
                 cellSize - 1, cellSize - 1);
+
+        g2d.setColor(Color.decode("#262626"));
+        g2d.drawString(" " + currentSimulation.getNode(row, col).getTotalEstimatedCost(), x + 5, y + 15);
     }
 }

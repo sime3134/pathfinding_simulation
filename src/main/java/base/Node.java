@@ -21,6 +21,15 @@ public class Node {
         this.targetIndex = 0;
     }
 
+    public Node (Vector position, int totalEstimatedCost, int estimatedDistanceToTarget, int targetIndex,
+                 Node parent) {
+        this.position = position;
+        this.totalEstimatedCost = totalEstimatedCost;
+        this.estimatedDistanceToTarget = estimatedDistanceToTarget;
+        this.targetIndex = targetIndex;
+        this.parent = parent;
+    }
+
     public Vector getPosition() {
         return position;
     }

@@ -1,5 +1,6 @@
 package base.algorithms;
 
+import base.CustomPriorityQueue;
 import base.Node;
 import base.data.AlgorithmData;
 import base.TargetVector;
@@ -9,14 +10,14 @@ import java.util.*;
 import static base.Helpers.delay;
 
 public class AStar implements Algorithm{
-    private static final int DELAY = 5;
-    private PriorityQueue<Node> openSet;
+    private static final int DELAY = 10000;
+    private CustomPriorityQueue<Node> openSet;
     private HashMap<Node, Integer> costSoFar;
     private int traversedNodes;
 
     @Override
     public AlgorithmData run(Node[][] grid, Vector startNodePosition, List<TargetVector> targetNodePositions, boolean visualized) {
-        openSet = new PriorityQueue<>(Comparator.comparingInt(Node::getTotalEstimatedCost));
+        openSet = new CustomPriorityQueue<>();
         costSoFar = new HashMap<>();
 
         int[] pathLength = new int[targetNodePositions.size()];
@@ -50,7 +51,7 @@ public class AStar implements Algorithm{
 
     private int findOneTarget(Node[][] grid, Node startNode, Vector currentTarget, int currentTargetIndex) {
         // Reset data structures and variables
-        reset(startNode, openSet);
+        reset(startNode);
 
         while (!openSet.isEmpty()) {
             Node current = openSet.poll();
@@ -84,7 +85,7 @@ public class AStar implements Algorithm{
                     neighbor.setParent(current);
                     costSoFar.put(neighbor, tentativeGCost);
                     neighbor.setTotalEstimatedCost(tentativeGCost + estimatedDistanceToTarget);
-                    openSet.add(neighbor);
+                    openSet.add(neighbor, neighbor.getTotalEstimatedCost());
                 }
             }
         }
@@ -93,7 +94,7 @@ public class AStar implements Algorithm{
 
     private int findOneTargetWithVisualization(Node[][] grid, Node startNode, TargetVector currentTarget,
                                                int currentTargetIndex) {
-        reset(startNode, openSet);
+        reset(startNode);
 
         while (!openSet.isEmpty()) {
             delay(DELAY);
@@ -128,19 +129,19 @@ public class AStar implements Algorithm{
                     neighbor.setParent(current);
                     costSoFar.put(neighbor, tentativeGCost);
                     neighbor.setTotalEstimatedCost(tentativeGCost + estimatedDistanceToTarget);
-                    openSet.add(neighbor);
-                    if(neighbor.getType() != 2) neighbor.setType(3);
+                    openSet.add(neighbor, neighbor.getTotalEstimatedCost());
+                    if(neighbor.getType() != 2 && neighbor.getType() != 1) neighbor.setType(3);
                 }
             }
         }
         return -1;
     }
 
-    private void reset(Node startNode, PriorityQueue<Node> openSet) {
+    private void reset(Node startNode) {
         openSet.clear();
         traversedNodes = 0;
         costSoFar.clear();
-        openSet.add(startNode);
+        openSet.add(startNode, 0);
         costSoFar.put(startNode, 0);
     }
 

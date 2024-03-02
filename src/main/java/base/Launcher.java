@@ -14,7 +14,7 @@ public class Launcher {
     public static void main(String[] args) {
         System.out.println("Simulation Launched");
         ScenarioReader scenarioReader = new ScenarioReader();
-        List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
+        List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios2.txt" );
         totalNumberOfSimulations = scenarios.size() * SIMULATIONS_PER_SCENARIO;
 
         Scanner scanner = new Scanner(System.in);
