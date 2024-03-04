@@ -18,9 +18,12 @@ public class Simulation {
     private Vector startNodePos;
     private List<TargetVector> targetNodes;
 
-    Random random = new Random();
+    private final Random random = new Random();
+
+    private final Input input;
 
     public Simulation(Scenario scenario) {
+        input = Input.getInstance();
         grid = new Node[scenario.getGridSize()][scenario.getGridSize()];
         initiateGrid(true);
         generateObstacles(scenario.getObstaclePercentage());
@@ -88,7 +91,7 @@ public class Simulation {
         }
         if(visualizationMode) {
             System.out.println("A*:   " + algorithmDataAStar);
-            delay(2000);
+            delay(5000);
         }
 
         initiateGrid(false);
@@ -100,7 +103,7 @@ public class Simulation {
         }
         if(visualizationMode) {
             System.out.println("BFS:  " + algorithmDataBFS);
-            delay(2000);
+            delay(5000);
         }
 
         return new SimulationData(algorithmDataAStar, algorithmDataBFS);

@@ -7,14 +7,14 @@ import base.data.SimulationData;
 import java.util.*;
 
 public class Launcher {
-
     private static final int SIMULATIONS_PER_SCENARIO = 15000;
     private static int totalNumberOfSimulations = 0;
+    private static final String FILE_NAME = "Scenarios2.txt";
 
     public static void main(String[] args) {
         System.out.println("Simulation Launched");
         ScenarioReader scenarioReader = new ScenarioReader();
-        List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/Scenarios.txt" );
+        List<Scenario> scenarios = scenarioReader.readFromFile("src/main/resources/" + FILE_NAME );
         totalNumberOfSimulations = scenarios.size() * SIMULATIONS_PER_SCENARIO;
 
         Scanner scanner = new Scanner(System.in);
