@@ -49,6 +49,7 @@ public class AStar implements Algorithm{
         return null;
     }
 
+
     private int findOneTarget(Node[][] grid, Node startNode, Vector currentTarget, int currentTargetIndex) {
         // Reset data structures and variables
         reset(startNode);
