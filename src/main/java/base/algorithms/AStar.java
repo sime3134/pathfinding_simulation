@@ -10,7 +10,7 @@ import java.util.*;
 import static base.Helpers.delay;
 
 public class AStar implements Algorithm{
-    private static final int DELAY = 10000;
+    private static final int DELAY = 0;
     private CustomPriorityQueue<Node> openSet;
     private HashMap<Node, Integer> costSoFar;
     private int traversedNodes;
@@ -62,13 +62,13 @@ public class AStar implements Algorithm{
                 throw new NullPointerException("Current node is null");
             }
 
-            //if target
-            if (current.getPosition().equalCoordinates(currentTarget)) {
-                return traversedNodes;
-            }
-
             // Check all neighbors of the current node.
             for (Node neighbor : getNeighbors(current, grid)) {
+                //if target
+                if (neighbor.getPosition().equalCoordinates(currentTarget)) {
+                    return traversedNodes;
+                }
+
                 if (costSoFar.containsKey(neighbor)) {
                     continue;
                 }
@@ -100,19 +100,16 @@ public class AStar implements Algorithm{
         while (!openSet.isEmpty()) {
             delay(DELAY);
             Node current = openSet.poll();
+            if(current.getType() != 2 && current.getType() != 4 && current.getType() != 5) current.setType(3);
             traversedNodes++;
 
-            if(current == null) {
-                throw new NullPointerException("Current node is null");
-            }
-
-            //if target
-            if (current.getPosition().equalCoordinates(currentTarget)) {
-                reconstructPath(current);
-                return traversedNodes;
-            }
-
             for (Node neighbor : getNeighbors(current, grid)) {
+                //if target
+                if (neighbor.getPosition().equalCoordinates(currentTarget)) {
+                    reconstructPath(current);
+                    return traversedNodes;
+                }
+
                 if (costSoFar.containsKey(neighbor)) {
                     continue;
                 }
@@ -131,7 +128,6 @@ public class AStar implements Algorithm{
                     costSoFar.put(neighbor, tentativeGCost);
                     neighbor.setTotalEstimatedCost(tentativeGCost + estimatedDistanceToTarget);
                     openSet.add(neighbor, neighbor.getTotalEstimatedCost());
-                    if(neighbor.getType() != 2 && neighbor.getType() != 1) neighbor.setType(3);
                 }
             }
         }
@@ -147,9 +143,10 @@ public class AStar implements Algorithm{
     }
 
     private void reconstructPath(Node current) {
-        Node parent = current.getParent();
+        if(current.getType() != 4 && current.getType() != 5) current.setType(2);
+        Node parent = current;
         while (parent.getParent() != null) {
-            parent.setType(2);
+            if(parent.getType() != 4 && parent.getType() != 5) parent.setType(2);
             parent = parent.getParent();
         }
     }

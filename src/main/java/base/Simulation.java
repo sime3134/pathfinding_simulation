@@ -20,10 +20,7 @@ public class Simulation {
 
     private final Random random = new Random();
 
-    private final Input input;
-
     public Simulation(Scenario scenario) {
-        input = Input.getInstance();
         grid = new Node[scenario.getGridSize()][scenario.getGridSize()];
         initiateGrid(true);
         generateObstacles(scenario.getObstaclePercentage());
@@ -38,7 +35,7 @@ public class Simulation {
                 if(!firstTime) type = grid[i][j].getType();
 
                 grid[i][j] = new Node(i, j, 0);
-                if(type == 1) grid[i][j].setType(type);
+                if(type == 1 || type == 4 || type == 5) grid[i][j].setType(type);
             }
         }
     }
@@ -65,6 +62,7 @@ public class Simulation {
         if(grid[startNodePos.getX()][startNodePos.getY()].getType() == 1) {
             generateStartNode();
         }
+        grid[startNodePos.getX()][startNodePos.getY()].setType(5);
     }
 
     public void generateTargetNodes(int numOfTargets) {
@@ -78,6 +76,7 @@ public class Simulation {
             int distanceToStart = Math.abs(position.getX() - startNodePos.getX()) + Math.abs(position.getY() - startNodePos.getY());
             position.setDistanceToStart(distanceToStart);
             targetNodes.add(position);
+            grid[position.getX()][position.getY()].setType(4);
         }
         Collections.sort(targetNodes);
     }

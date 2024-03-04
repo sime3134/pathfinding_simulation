@@ -3,7 +3,7 @@ package base;
 public class Node {
     private final Vector position;
 
-    // 0 = empty, 1 = obstacle, 2 = path, 3 = visited
+    // 0 = empty, 1 = obstacle, 2 = path, 3 = visited, 4 = goal, 5 = start
     private int type;
     private Node parent;
 

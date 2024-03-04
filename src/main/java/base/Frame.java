@@ -32,7 +32,6 @@ public class Frame extends JFrame {
         canvas.setPreferredSize(getContentPane().getPreferredSize());
         canvas.setFocusable(false);
         add(canvas);
-        addKeyListener(Input.getInstance());
         pack();
 
         canvas.createBufferStrategy(2);
@@ -155,7 +154,7 @@ public class Frame extends JFrame {
         g2d.fillRect(x + 1, y + 1,
                 cellSize - 1, cellSize - 1);
 
-        g2d.setColor(Color.decode("#262626"));
-        g2d.drawString(" " + currentSimulation.getNode(row, col).getTotalEstimatedCost(), x + 5, y + 15);
+        g2d.setColor(Color.decode("#f1f1f1"));
+        g2d.drawString(" " + currentSimulation.getNode(row, col).getType(), x + 5, y + 15);
     }
 }

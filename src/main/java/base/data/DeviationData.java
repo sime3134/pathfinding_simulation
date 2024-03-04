@@ -3,13 +3,13 @@ package base.data;
 public class DeviationData {
 
     private final int scenarioId;
-    private final double aStarExecutionTimeDeviation;
-    private final double bfsExecutionTimeDeviation;
-    private final double aStarNodesVisitedDeviation;
-    private final double bfsNodesVisitedDeviation;
+    private final long aStarExecutionTimeDeviation;
+    private final long bfsExecutionTimeDeviation;
+    private final long aStarNodesVisitedDeviation;
+    private final long bfsNodesVisitedDeviation;
 
-    public DeviationData(int scenarioId, double aStarExecutionTimeDeviation, double bfsExecutionTimeDeviation,
-                         double aStarNodesVisitedDeviation, double bfsNodesVisitedDeviation) {
+    public DeviationData(int scenarioId, long aStarExecutionTimeDeviation, long bfsExecutionTimeDeviation,
+                         long aStarNodesVisitedDeviation, long bfsNodesVisitedDeviation) {
         this.scenarioId = scenarioId;
         this.aStarExecutionTimeDeviation = aStarExecutionTimeDeviation;
         this.bfsExecutionTimeDeviation = bfsExecutionTimeDeviation;
