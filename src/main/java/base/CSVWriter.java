@@ -11,6 +11,8 @@ import java.util.List;
 
 public class CSVWriter {
 
+    private CSVWriter() {}
+
     public static void writeSingleScenario(ScenarioData scenarioData) {
         try {
             FileWriter writer =

@@ -21,7 +21,7 @@ public class BFS implements Algorithm {
 
     private boolean[][] visited;
 
-    private static final int DELAY = 100;
+    private static final int DELAY = 2;
     @Override
     public AlgorithmData run(Node[][] grid, Vector startNode, List<TargetVector> targetNodes, boolean visualizationMode) {
         this.targetNodes = targetNodes;
@@ -78,9 +78,8 @@ public class BFS implements Algorithm {
             if (neighbour.getType() == 4) {
                 foundTargets++;
                 retractPath(current);
-            } else {
-                queue.add(neighbour);
             }
+            queue.add(neighbour);
         }
     }
 
@@ -118,12 +117,11 @@ public class BFS implements Algorithm {
             if (isValid(newX, newY, grid) && !visited[newX][newY]) {
                 Node neighbour = grid[newX][newY];
                 visited[newX][newY] = true;
+                neighbour.setParent(current);
                 if (neighbour.getType() == 4) {
                     foundTargets++;
-                } else {
-                    queue.add(neighbour);
                 }
-                neighbour.setParent(current);
+                queue.add(neighbour);
             }
         }
     }

@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 
 public class CustomPriorityQueue<T> {
-    private PriorityQueue<QueueElement<T>> queue = new PriorityQueue<>();
+    private final PriorityQueue<QueueElement<T>> queue = new PriorityQueue<>();
 
     public void add(T element, int priority) {
         queue.add(new QueueElement<>(element, priority));
