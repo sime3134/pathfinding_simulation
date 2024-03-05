@@ -72,15 +72,15 @@ public class CSVWriter {
                     "Deviation, BFS Nodes Visited Deviation");
             writer.append("\n");
             for (DeviationData deviationData : deviationDataList) {
-                writer.append(String.valueOf(deviationData.getScenarioId()));
+                writer.append(String.valueOf(deviationData.scenarioId()));
                 writer.append(",");
-                writer.append(String.valueOf(deviationData.getaStarExecutionTimeDeviation()));
+                writer.append(String.valueOf(deviationData.aStarExecutionTimeDeviation()));
                 writer.append(",");
-                writer.append(String.valueOf(deviationData.getBfsExecutionTimeDeviation()));
+                writer.append(String.valueOf(deviationData.bfsExecutionTimeDeviation()));
                 writer.append(",");
-                writer.append(String.valueOf(deviationData.getaStarNodesVisitedDeviation()));
+                writer.append(String.valueOf(deviationData.aStarNodesVisitedDeviation()));
                 writer.append(",");
-                writer.append(String.valueOf(deviationData.getBfsNodesVisitedDeviation()));
+                writer.append(String.valueOf(deviationData.bfsNodesVisitedDeviation()));
                 writer.append("\n");
             }
             writer.close();

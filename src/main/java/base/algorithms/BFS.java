@@ -21,7 +21,7 @@ public class BFS implements Algorithm {
 
     private boolean[][] visited;
 
-    private static final int DELAY = 2;
+    private static final int DELAY = 0;
     @Override
     public AlgorithmData run(Node[][] grid, Vector startNode, List<TargetVector> targetNodes, boolean visualizationMode) {
         this.targetNodes = targetNodes;
@@ -84,10 +84,10 @@ public class BFS implements Algorithm {
     }
 
     private void retractPath(Node current) {
-        if(current.getType() != 4 && current.getType() != 5) current.setType(2);
+        if(current.getType()!= 1 && current.getType() != 4 && current.getType() != 5) current.setType(2);
         Node parent = current.getParent();
-        while (parent.getParent() != null) {
-            if(parent.getType() != 4 && parent.getType() != 5) parent.setType(2);
+        while (parent != null && parent.getParent() != null) {
+            if(current.getType()!= 1 && parent.getType() != 4 && parent.getType() != 5) parent.setType(2);
             parent = parent.getParent();
         }
     }

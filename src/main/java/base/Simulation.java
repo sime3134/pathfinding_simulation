@@ -22,20 +22,29 @@ public class Simulation {
 
     public Simulation(Scenario scenario) {
         grid = new Node[scenario.getGridSize()][scenario.getGridSize()];
-        initiateGrid(true);
+        initiateGrid();
         generateObstacles(scenario.getObstaclePercentage());
         generateStartNode();
         generateTargetNodes(scenario.getNumOfTargets());
     }
 
-    private void initiateGrid(boolean firstTime) {
-    for (int i = 0; i < grid.length; i++) {
+    private void initiateGrid() {
+        for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                int type = 0;
-                if(!firstTime) type = grid[i][j].getType();
-
                 grid[i][j] = new Node(i, j, 0);
-                if(type == 1 || type == 4 || type == 5) grid[i][j].setType(type);
+            }
+        }
+    }
+
+    private void resetGrid() {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                int type = grid[i][j].getType();
+                if(type == 1 || type == 4 || type == 5) {
+                    grid[i][j] = new Node(i, j, type);
+                } else {
+                    grid[i][j] = new Node(i, j, 0);
+                }
             }
         }
     }
@@ -90,10 +99,10 @@ public class Simulation {
         }
         if(visualizationMode) {
             System.out.println("A*:   " + algorithmDataAStar);
-            delay(5000);
+            delay(3000);
         }
 
-        initiateGrid(false);
+        resetGrid();
 
         currentAlgorithm = new BFS();
         AlgorithmData algorithmDataBFS = currentAlgorithm.run(grid, startNodePos, targetNodes, visualizationMode);
@@ -102,7 +111,7 @@ public class Simulation {
         }
         if(visualizationMode) {
             System.out.println("BFS:  " + algorithmDataBFS);
-            delay(5000);
+            delay(3000);
         }
 
         return new SimulationData(algorithmDataAStar, algorithmDataBFS);

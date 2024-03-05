@@ -7,7 +7,7 @@ import base.data.SimulationData;
 import java.util.*;
 
 public class Launcher {
-    private static final int SIMULATIONS_PER_SCENARIO = 30000;
+    private static final int SIMULATIONS_PER_SCENARIO = 1;
     private static int totalNumberOfSimulations = 0;
     private static final String FILE_NAME = "Scenarios.txt";
 

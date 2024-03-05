@@ -100,7 +100,7 @@ public class AStar implements Algorithm{
         while (!openSet.isEmpty()) {
             delay(DELAY);
             Node current = openSet.poll();
-            if(current.getType() != 2 && current.getType() != 4 && current.getType() != 5) current.setType(3);
+            if(current.getType() != 1 && current.getType() != 2 && current.getType() != 4 && current.getType() != 5) current.setType(3);
             traversedNodes++;
 
             for (Node neighbor : getNeighbors(current, grid)) {
@@ -110,7 +110,7 @@ public class AStar implements Algorithm{
                     return traversedNodes;
                 }
 
-                if (costSoFar.containsKey(neighbor)) {
+                if (costSoFar.containsKey(neighbor) || neighbor.getType() == 1) {
                     continue;
                 }
 
@@ -143,10 +143,10 @@ public class AStar implements Algorithm{
     }
 
     private void reconstructPath(Node current) {
-        if(current.getType() != 4 && current.getType() != 5) current.setType(2);
+        if(current.getType()!= 1 && current.getType() != 4 && current.getType() != 5) current.setType(2);
         Node parent = current;
         while (parent.getParent() != null) {
-            if(parent.getType() != 4 && parent.getType() != 5) parent.setType(2);
+            if(current.getType()!= 1 && parent.getType() != 4 && parent.getType() != 5) parent.setType(2);
             parent = parent.getParent();
         }
     }

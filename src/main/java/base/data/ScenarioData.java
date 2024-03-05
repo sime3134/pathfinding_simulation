@@ -75,13 +75,13 @@ public class ScenarioData {
             aStarNodesVisitedVariance += Math.pow(simulationData.getAStarData().getNodesVisited() - (double) averageAStarNodesVisited, 2);
             bfsNodesVisitedVariance += Math.pow(simulationData.getBfsData().getNodesVisited() - (double) averageBFSNodesVisited, 2);
         }
-        long aStarExecutionTimeStandardDeviation =
-                Math.round(Math.sqrt( aStarExecutionTimeVariance / data.size()));
-        long bfsExecutionTimeStandardDeviation =
-                Math.round(Math.sqrt(bfsExecutionTimeVariance / data.size()));
-        long aStarNodesVisitedStandardDeviation =
-                Math.round(Math.sqrt(aStarNodesVisitedVariance / data.size()));
-        long bfsNodesVisitedStandardDeviation = Math.round(Math.sqrt(bfsNodesVisitedVariance / data.size()));
+        int aStarExecutionTimeStandardDeviation =
+                (int) Math.round(Math.sqrt( aStarExecutionTimeVariance / data.size()));
+        int bfsExecutionTimeStandardDeviation =
+                (int) Math.round(Math.sqrt(bfsExecutionTimeVariance / data.size()));
+        int aStarNodesVisitedStandardDeviation =
+                (int) Math.round(Math.sqrt(aStarNodesVisitedVariance / data.size()));
+        int bfsNodesVisitedStandardDeviation = (int) Math.round(Math.sqrt(bfsNodesVisitedVariance / data.size()));
         return new DeviationData(scenario.getScenarioId(), aStarExecutionTimeStandardDeviation,
                 bfsExecutionTimeStandardDeviation,
                 aStarNodesVisitedStandardDeviation, bfsNodesVisitedStandardDeviation);

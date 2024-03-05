@@ -9,8 +9,4 @@ public class Helpers {
             e.printStackTrace();
         }
     }
-
-    public static double calculateStandardDeviation(double variance) {
-        return Math.sqrt(variance);
-    }
 }
