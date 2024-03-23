@@ -114,9 +114,9 @@ public class Frame extends JFrame {
                 if (currentSimulation.getNode(row, col).getType() == 2) {
                     drawCell(graphics, row, col, Color.BLUE);
                 }
-                if (currentSimulation.getNode(row, col).getType() == 3) {
-                    drawCell(graphics, row, col, Color.YELLOW);
-                }
+//                if (currentSimulation.getNode(row, col).getType() == 3) {
+//                    drawCell(graphics, row, col, Color.YELLOW);
+//                }
             }
         }
     }
@@ -155,6 +155,6 @@ public class Frame extends JFrame {
                 cellSize - 1, cellSize - 1);
 
         g2d.setColor(Color.decode("#f1f1f1"));
-        g2d.drawString(" " + currentSimulation.getNode(row, col).getType(), x + 5, y + 15);
+        //g2d.drawString(" " + currentSimulation.getNode(row, col)., x + 5, y + 15);
     }
 }

@@ -9,7 +9,7 @@ import java.util.*;
 public class Launcher {
     private static final int SIMULATIONS_PER_SCENARIO = 100000;
     private static int totalNumberOfSimulations = 0;
-    private static final String FILE_NAME = "Scenarios.txt";
+    private static final String FILE_NAME = "Scenarios2.txt";
 
     public static void main(String[] args) {
         System.out.println("Simulation Launched");
